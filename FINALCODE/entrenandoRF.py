@@ -12,6 +12,7 @@ print('Lista de números: ', peopleList)
 labels = []
 facesData = []
 carac = [] #LISTA DE VARIABLE
+features = []
 label = 0
 
 
@@ -34,18 +35,23 @@ for nameDir in peopleList:
 		cnt = contours[0]
     
 		#SE DA INICIO A LA CARACTERIZACIÓN
-		M = cv2.moments(cnt) # 
-		Hm = cv2.HuMoments(M).flatten() # Identifica los 7 Momentos de la imagen iterada
-		carac =np.array( [ Hm[0], Hm[1], Hm[2], Hm[3], Hm[4], Hm[5], Hm[6] ] )
-		
+		#M = cv2.moments(cnt) # 
+		#Hm = cv2.HuMoments(M).flatten() # Identifica los 7 Momentos de la imagen iterada
+		Hm = cv2.HuMoments(cv2.moments(cnt)).flatten()
+		carac = [ Hm[0], Hm[1], Hm[2], Hm[3], Hm[4], Hm[5], Hm[6], label ]
+		#carac = np.array(carac)
+		#carac = np.reshape(1,-1)
+		features.append(carac)
+		#features = features.reshape(1, -1)
+		 
+ 		
 	label = label + 1
 	
 
 
-#print('labels= ',labels)
-print('Caracteristicas= ',carac)
-print(Hm)
+print('labels= ',labels)
 
+#print(Hm)
 print('Número de etiquetas 0: ',np.count_nonzero(np.array(labels)==0))
 print('Número de etiquetas 1: ',np.count_nonzero(np.array(labels)==1))
 print('Número de etiquetas 2: ',np.count_nonzero(np.array(labels)==2))
@@ -57,11 +63,31 @@ print('Número de etiquetas 7: ',np.count_nonzero(np.array(labels)==7))
 print('Número de etiquetas 8: ',np.count_nonzero(np.array(labels)==8))
 print('Número de etiquetas 9: ',np.count_nonzero(np.array(labels)==9))
 
+print('Caracteristicas= ', features)
+print("ver aqui abajo*************************************************")
+#print(','.join(features))
 
-mi_path = "../fichero2.txt"
+print('Número de caracteristicas 0: ',np.count_nonzero(np.array(features)==0))
+print('Número de caracteristicas 1: ',np.count_nonzero(np.array(features)==1))
+print('Número de caracteristicas 2: ',np.count_nonzero(np.array(features)==2))
+print('Número de caracteristicas 3: ',np.count_nonzero(np.array(features)==3))
+print('Número de caracteristicas 4: ',np.count_nonzero(np.array(features)==4))
+print('Número de caracteristicas 5: ',np.count_nonzero(np.array(features)==5))
+print('Número de caracteristicas 6: ',np.count_nonzero(np.array(features)==6))
+print('Número de caracteristicas 7: ',np.count_nonzero(np.array(features)==7))
+print('Número de caracteristicas 8: ',np.count_nonzero(np.array(features)==8))
+print('Número de caracteristicas 9: ',np.count_nonzero(np.array(features)==9))
+
+
+
+
+mi_path = "../fichero6.txt"
 f = open(mi_path, 'a+')
 
-for i in labels:
-    f.write( str(i) + ',')
+for i in features:
+    #f.write( str(i) + '\n')
+    f.write( ", ".join(map(str, i)) + '\n') #A14ste de text
 
 f.close()
+
+#i = print(','.join(features))

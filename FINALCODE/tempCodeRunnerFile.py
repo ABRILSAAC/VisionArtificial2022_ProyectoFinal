@@ -1,1 +1,1 @@
-labels = []
+print(','.join(features))
